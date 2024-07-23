@@ -352,6 +352,112 @@
       </div>
     </div>
 
+    <script>
+      function createProductApi() {
+        return {
+          async fetchProducts() {
+            try {
+              const response = await fetch("https://fakestoreapi.com/products");
+              if (!response.ok) {
+                throw new Error(
+                  "Data fetching failed. Please check your network connection and reload."
+                );
+              }
+              return await response.json();
+            } catch (error) {
+              console.error(error);
+              return [];
+            }
+          },
+
+          async fetchCategories() {
+            try {
+              const response = await fetch(
+                "https://fakestoreapi.com/products/categories"
+              );
+              if (!response.ok) {
+                throw new Error(
+                  "Data fetching failed, please check your network connection"
+                );
+              }
+              const data = await response.json();
+              this.categories = data;
+              return data
+            } catch (error) {
+              console.error("Error fetching categories:", error);
+            }
+          },
+      
+        };
+      }
+
+      function productDisplay() {
+        return {
+          products: [],
+          filteredProducts: [],
+          categories: [],
+          productApi: createProductApi(),
+          isOpen: false,
+          filterItem: "All categories",
+          searchTerm: "",
+          sorting: "default",
+          isModalOpen: false,
+          selectedProduct: null,
+
+          async init() {
+            this.products = await this.productApi.fetchProducts();
+            this.filteredProducts = [...this.products];
+            this.categories = await this.productApi.fetchCategories();
+          },
+
+          toggleDropdown() {
+            this.isOpen = !this.isOpen;
+          },
+
+          setFilter(category) {
+            this.filterItem = category;
+            this.isOpen = false;
+            this.applyFilter();
+          },
+ 
+          openModal(product) {
+            this.selectedProduct = product;
+            this.isModalOpen = true;
+          },
+
+          closeModal() {
+            this.isModalOpen = false;
+            this.selectedProduct = null;
+          },
+
+          applyFilter() {
+            this.filteredProducts = this.products.filter(product => {
+              const matchesCategory = this.filterItem === "All categories" || product.category === this.filterItem;
+              const matchesSearch = product.title.toLowerCase().includes(this.searchTerm.toLowerCase());
+              return matchesCategory && matchesSearch;
+            });
+            this.applySorting();
+          },
+
+          applySorting() {
+            switch (this.sorting) {
+              case "low":
+                this.filteredProducts.sort((a, b) => a.price - b.price);
+                break;
+              case "high":
+                this.filteredProducts.sort((a, b) => b.price - a.price);
+                break;
+              default:
+                this.filteredProducts.sort((a, b) => a.id - b.id);
+            }
+          },
+        };
+      }
+     
+      document.addEventListener("alpine:init", () => {
+        Alpine.data("productDisplay", productDisplay);
+      });
+    </script>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
