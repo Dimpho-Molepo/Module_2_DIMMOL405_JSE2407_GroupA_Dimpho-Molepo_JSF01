@@ -296,6 +296,7 @@
           </select>
         </div>
 
+        <button @click="resetFiltersAndSorting()"> reset </button>
       </div>
 
       <!-- Products -->
@@ -465,27 +466,47 @@
                 x-show="!modalLoading && selectedProduct"
                 class="sm:flex sm:items-start"
               >
-              <div class="mt-2">
-                <img :src="selectedProduct?.image" :alt="selectedProduct?.title" class="w-full h-64 object-contain mb-4" />
-                <p class="text-sm text-gray-500" x-text="selectedProduct?.description || 'No description available'"></p>
-                <p class="text-lg font-bold mt-2" x-text="`$${selectedProduct?.price || 'N/A'}`"></p>
-                <p class="text-sm text-gray-600 mt-1" x-text="`Category: ${selectedProduct?.category || 'N/A'}`"></p>
-                <div class="flex items-center mt-2">
-                  <span class="text-sm text-gray-600 mr-2" x-text="`Rating: ${selectedProduct?.rating?.rate || 'N/A'}`"></span>
-                  <span class="text-sm text-gray-600" x-text="`(${selectedProduct?.rating?.count || 0} reviews)`"></span>
+                <div class="mt-2">
+                  <img
+                    :src="selectedProduct?.image"
+                    :alt="selectedProduct?.title"
+                    class="w-full h-64 object-contain mb-4"
+                  />
+                  <p
+                    class="text-sm text-gray-500"
+                    x-text="selectedProduct?.description || 'No description available'"
+                  ></p>
+                  <p
+                    class="text-lg font-bold mt-2"
+                    x-text="`$${selectedProduct?.price || 'N/A'}`"
+                  ></p>
+                  <p
+                    class="text-sm text-gray-600 mt-1"
+                    x-text="`Category: ${selectedProduct?.category || 'N/A'}`"
+                  ></p>
+                  <div class="flex items-center mt-2">
+                    <span
+                      class="text-sm text-gray-600 mr-2"
+                      x-text="`Rating: ${selectedProduct?.rating?.rate || 'N/A'}`"
+                    ></span>
+                    <span
+                      class="text-sm text-gray-600"
+                      x-text="`(${selectedProduct?.rating?.count || 0} reviews)`"
+                    ></span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
-            >
-              <button
-                @click="closeModal()"
-                type="button"
-                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+              <div
+                class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
               >
-                Close
-              </button>
+                <button
+                  @click="closeModal()"
+                  type="button"
+                  class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -620,6 +641,13 @@
            */
           closeModal() {
             this.isModalOpen = false;
+          },
+
+          resetFiltersAndSorting() {
+            this.filterItem = "All categories";
+            this.sorting = "default";
+            this.searchTerm = "";
+            this.applyFilter();
           },
 
           /**
