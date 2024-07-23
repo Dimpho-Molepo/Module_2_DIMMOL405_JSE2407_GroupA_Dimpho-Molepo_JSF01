@@ -439,7 +439,7 @@
           >
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <!-- Loading spinner -->
-              <div x-show="modalLoading"  class="text-center py-8">
+              <div x-show="modalLoading" class="text-center py-8">
                 <svg
                   class="inline mr-2 w-10 h-10 text-gray-200 animate-spin fill-blue-600"
                   viewBox="0 0 100 101"
@@ -459,7 +459,10 @@
               </div>
 
               <!-- Product details -->
-              <div x-show="!modalLoading && selectedProduct" class="sm:flex sm:items-start">
+              <div
+                x-show="!modalLoading && selectedProduct"
+                class="sm:flex sm:items-start"
+              >
                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <h3
                     class="text-lg leading-6 font-medium text-gray-900"
@@ -515,8 +518,18 @@
     </div>
 
     <script>
+      /**
+       * Creates an API object for fetching product data.
+       * @returns {Object} An object with methods for fetching products and categories.
+       */
       function createProductApi() {
         return {
+          /**
+           * Fetches all products from the API.
+           * @async
+           * @returns {Promise<Array>} A promise that resolves to an array of product objects.
+           * @throws {Error} If the data fetching fails.
+           */
           async fetchProducts() {
             try {
               const response = await fetch("https://fakestoreapi.com/products");
@@ -532,6 +545,12 @@
             }
           },
 
+          /**
+           * Fetches all product categories from the API.
+           * @async
+           * @returns {Promise<Array>} A promise that resolves to an array of category strings.
+           * @throws {Error} If the data fetching fails.
+           */
           async fetchCategories() {
             try {
               const response = await fetch(
@@ -552,6 +571,10 @@
         };
       }
 
+      /**
+       * Creates the main product display functionality.
+       * @returns {Object} An object containing all the methods and properties for product display.
+       */
       function productDisplay() {
         return {
           products: [],
@@ -567,6 +590,10 @@
           isLoading: true,
           modalLoading: false,
 
+          /**
+           * Initializes the product display by fetching products and categories.
+           * @async
+           */
           async init() {
             this.isLoading = true;
             this.products = await this.productApi.fetchProducts();
@@ -575,16 +602,28 @@
             this.isLoading = false;
           },
 
+          /**
+           * Toggles the dropdown for category selection.
+           */
           toggleDropdown() {
             this.isOpen = !this.isOpen;
           },
 
+          /**
+           * Sets the filter category and applies the filter.
+           * @param {string} category - The category to filter by.
+           */
           setFilter(category) {
             this.filterItem = category;
             this.isOpen = false;
             this.applyFilter();
           },
 
+          /**
+           * Opens the modal with details of the selected product.
+           * @async
+           * @param {Object} product - The product to display in the modal.
+           */
           async openModal(product) {
             this.modalLoading = true;
             this.isModalOpen = true;
@@ -601,10 +640,16 @@
             }
           },
 
+          /**
+           * Closes the product detail modal.
+           */
           closeModal() {
             this.isModalOpen = false;
           },
 
+          /**
+           * Applies the current filter and search term to the product list.
+           */
           applyFilter() {
             this.filteredProducts = this.products.filter((product) => {
               const matchesCategory =
@@ -618,6 +663,9 @@
             this.applySorting();
           },
 
+          /**
+           * Applies the current sorting option to the filtered products.
+           */
           applySorting() {
             switch (this.sorting) {
               case "low":
@@ -632,6 +680,10 @@
           },
         };
       }
+
+      /**
+       * Initializes Alpine.js with the productDisplay data function.
+       */
       document.addEventListener("alpine:init", () => {
         Alpine.data("productDisplay", productDisplay);
       });
