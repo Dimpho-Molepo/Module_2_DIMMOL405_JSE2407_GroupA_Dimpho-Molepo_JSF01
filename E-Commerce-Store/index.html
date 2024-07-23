@@ -55,7 +55,7 @@
       content="https://metatags.io/images/meta-tags.png"
     />
   </head>
-  <body>
+  <body class="bg-[#caf0f8]">
     <!-- Header/NavBar -->
     <header x-data="{ showNavbar: false }" class="sticky z-50 top-0">
       <nav class="bg-gray-500 border-gray-200">
@@ -162,6 +162,7 @@
         </div>
       </nav>
     </header>
+
     <!-- Product List -->
     <div x-data="productDisplay()" x-init="init()" class="grid justify-center">
       <!-- Loading State -->
@@ -294,6 +295,7 @@
             <option value="high">Price: High to Low</option>
           </select>
         </div>
+
       </div>
 
       <!-- Products -->
@@ -332,7 +334,7 @@
                     <template x-for="i in 5" :key="i">
                       <svg
                         class="w-4 h-4"
-                        :class="{ 'text-yellow-400': i <= Math.round(product.rating.rate), 'text-gray-300': i > Math.round(product.rating.rate) }"
+                        :class="{ 'text-yellow-400': i <= Math.round(product?.rating?.rate), 'text-gray-300': i > Math.round(product?.rating?.rate) }"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -463,41 +465,14 @@
                 x-show="!modalLoading && selectedProduct"
                 class="sm:flex sm:items-start"
               >
-                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <h3
-                    class="text-lg leading-6 font-medium text-gray-900"
-                    id="modal-title"
-                    x-text="selectedProduct.title"
-                  ></h3>
-                  <div class="mt-2">
-                    <img
-                      :src="selectedProduct.image"
-                      :alt="selectedProduct.title"
-                      class="w-full h-64 object-contain mb-4"
-                    />
-                    <p
-                      class="text-sm text-gray-500"
-                      x-text="selectedProduct.description"
-                    ></p>
-                    <p
-                      class="text-lg font-bold mt-2"
-                      x-text="`$${selectedProduct.price}`"
-                    ></p>
-                    <p
-                      class="text-sm text-gray-600 mt-1"
-                      x-text="`Category: ${selectedProduct.category}`"
-                    ></p>
-                    <div class="flex items-center mt-2">
-                      <span
-                        class="text-sm text-gray-600 mr-2"
-                        x-text="`Rating: ${selectedProduct.rating.rate}`"
-                      ></span>
-                      <span
-                        class="text-sm text-gray-600"
-                        x-text="`(${selectedProduct.rating.count} reviews)`"
-                      ></span>
-                    </div>
-                  </div>
+              <div class="mt-2">
+                <img :src="selectedProduct?.image" :alt="selectedProduct?.title" class="w-full h-64 object-contain mb-4" />
+                <p class="text-sm text-gray-500" x-text="selectedProduct?.description || 'No description available'"></p>
+                <p class="text-lg font-bold mt-2" x-text="`$${selectedProduct?.price || 'N/A'}`"></p>
+                <p class="text-sm text-gray-600 mt-1" x-text="`Category: ${selectedProduct?.category || 'N/A'}`"></p>
+                <div class="flex items-center mt-2">
+                  <span class="text-sm text-gray-600 mr-2" x-text="`Rating: ${selectedProduct?.rating?.rate || 'N/A'}`"></span>
+                  <span class="text-sm text-gray-600" x-text="`(${selectedProduct?.rating?.count || 0} reviews)`"></span>
                 </div>
               </div>
             </div>
