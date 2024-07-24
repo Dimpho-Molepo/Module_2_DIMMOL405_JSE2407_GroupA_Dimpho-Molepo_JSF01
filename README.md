@@ -2,10 +2,11 @@
 
 ## Project Overview
 This project is a refactor of the e-commerce store from the React project. The goal is to use Alpine 
-to create a similar e-commerce store. The project is a single page application that allows users to
+to create a similar e-commerce store. The project is a single-page application that allows users to
 add items to their cart and checkout. The project uses Alpine to create a dynamic shopping cart and
 checkout page. The project also uses Tailwind CSS for styling. The project is a good example of
-how to use Alpine to create a dynamic and interactive user interface.
+how Alpine can be used to create a dynamic and interactive user interface.
+![Screenshot 2024-07-23 193709](https://github.com/user-attachments/assets/3df354a7-6be4-4b9b-bfa2-69ecdea927f8)
 
 
 ## Features
